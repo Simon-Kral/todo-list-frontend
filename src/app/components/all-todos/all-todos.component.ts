@@ -18,7 +18,6 @@ export class AllTodosComponent implements OnInit {
   async ngOnInit() {
     try {
       this.todos = await this.loadTodos();
-      console.log(this.todos);
     } catch (e) {
       console.error(e);
       this.error = 'Fehler beim Laden!';

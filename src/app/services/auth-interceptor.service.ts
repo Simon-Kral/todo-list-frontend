@@ -1,4 +1,10 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -18,7 +24,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     const token = localStorage.getItem('token');
     if (token) {
       req = req.clone({
-        setHeaders: { Authorization: `Token: ${token}` },
+        headers: req.headers.append('Authorization', `Token ${token}`),
       });
     }
     return next.handle(req).pipe(
