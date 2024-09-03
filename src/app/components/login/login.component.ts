@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,10 +11,23 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  email: string = '';
+  username: string = '';
   password: string = '';
+  authService = inject(AuthService);
+  router = inject(Router);
 
-  login() {
-    // Logik, um mit backend zu kommunizieren
+  async login() {
+    try {
+      let resp: any = await this.authService.loginWithUsernameAndPassword(
+        this.username,
+        this.password
+      );
+      console.log(resp);
+      localStorage.setItem('token', resp.token);
+
+      this.router.navigateByUrl('/todos');
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
